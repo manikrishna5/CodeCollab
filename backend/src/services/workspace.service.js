@@ -1,6 +1,7 @@
 const workspaceRepository = require("../repositories/workspace.repository");
 const folderRepository = require("../repositories/folder.repository");
 const fileRepository = require("../repositories/file.repository");
+const authRepository = require("../repositories/auth.repository");
 
 const createWorkspace = async (workspaceData, userId) => {
   console.log("User ID:", userId);
@@ -117,6 +118,61 @@ const getWorkspaceTree = async (workspaceId, userId) => {
     folders,
     files,
   };
+};
+
+const inviteMember = async (
+  workspaceId,
+  email,
+  role,
+  currentUserId
+) => {
+
+  const workspace =
+    await workspaceRepository.findWorkspaceById(workspaceId);
+
+  if (!workspace) {
+    const error = new Error("Workspace not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (
+    workspace.owner._id.toString() !==
+    currentUserId.toString()
+  ) {
+    const error = new Error("Only owner can invite");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  const user =
+    await authRepository.findUserByEmail(email);
+
+  if (!user) {
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const alreadyMember = workspace.members.some(
+    (member) =>
+      member.user._id.toString() ===
+      user._id.toString()
+  );
+
+  if (alreadyMember) {
+    const error = new Error("User already a member");
+    error.statusCode = 409;
+    throw error;
+  }
+
+  return await workspaceRepository.addMember(
+    workspaceId,
+    {
+      user: user._id,
+      role,
+    }
+  );
 };
 
 module.exports = {

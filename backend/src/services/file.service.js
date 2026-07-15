@@ -43,6 +43,42 @@ const createFile = async (fileData, userId) => {
   });
 };
 
+const updateFileContent = async (
+  fileId,
+  content,
+  userId
+) => {
+  const file = await fileRepository.findFileById(fileId);
+
+  if (!file) {
+    const error = new Error("File not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const workspace = await workspaceRepository.isWorkspaceMember(
+    file.workspace,
+    userId
+  );
+
+  if (!workspace) {
+    const error = new Error("Access Denied");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  return await fileRepository.updateFileContent(
+    fileId,
+    content
+  );
+};
+
+const findFileById = async (fileId) => {
+  return await File.findById(fileId);
+};
+
 module.exports = {
   createFile,
+  updateFileContent,
+  findFileById,
 };

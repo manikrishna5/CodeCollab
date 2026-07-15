@@ -77,6 +77,26 @@ const getWorkspaceTree = asyncHandler(async (req, res) => {
   });
 });
 
+const inviteMember = asyncHandler(async (req, res) => {
+
+  const { email, role } = req.body;
+
+  const workspace =
+    await workspaceService.inviteMember(
+      req.params.workspaceId,
+      email,
+      role,
+      req.user._id
+    );
+
+  res.status(200).json({
+    success: true,
+    message: "Member Invited Successfully",
+    data: workspace,
+  });
+
+});
+
 module.exports = {
   createWorkspace,
   getUserWorkspaces,
@@ -84,4 +104,5 @@ module.exports = {
   updateWorkspace,
   deleteWorkspace,
   getWorkspaceTree,
+  inviteMember,
 };

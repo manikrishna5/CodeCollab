@@ -42,6 +42,22 @@ const isWorkspaceMember = async (workspaceId, userId) => {
   });
 };
 
+const addMember = async (workspaceId, member) => {
+  return await Workspace.findByIdAndUpdate(
+    workspaceId,
+    {
+      $push: {
+        members: member,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("owner", "fullName username email")
+    .populate("members.user", "fullName username email");
+};
+
 module.exports = {
   createWorkspace,
   getUserWorkspaces,
@@ -49,4 +65,5 @@ module.exports = {
   updateWorkspace,
   deleteWorkspace,
   isWorkspaceMember,
+  addMember,
 };
