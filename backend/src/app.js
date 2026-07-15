@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
@@ -27,7 +28,7 @@ app.get("/health", (req, res) => {
 
 
 // Routes will be added here later
-
+app.use("/api/v1/auth", authRoutes);
 app.use(errorMiddleware);
 
 module.exports = app;
