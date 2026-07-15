@@ -3,6 +3,9 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const authRoutes = require("./routes/auth.routes");
+const workspaceRoutes = require("./routes/workspace.routes");
+const folderRoutes = require("./routes/folder.routes");
+const fileRoutes = require("./routes/file.routes");
 
 const app = express();
 
@@ -29,6 +32,9 @@ app.get("/health", (req, res) => {
 
 // Routes will be added here later
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/workspaces", workspaceRoutes);
+app.use("/api/v1/folders", folderRoutes);
+app.use("/api/v1/files", fileRoutes);
 app.use(errorMiddleware);
 
 module.exports = app;

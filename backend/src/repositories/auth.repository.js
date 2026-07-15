@@ -13,7 +13,7 @@ const findUserByUsername = async (username) => {
 };
 
 const findUserById = async (id) => {
-  return await User.findById(id);
+    return await User.findById(id).select("-password");
 };
 
 const updateRefreshToken = async (id, refreshToken) => {
