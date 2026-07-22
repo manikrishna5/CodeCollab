@@ -28,7 +28,20 @@ const updateFileContent = asyncHandler(async (req, res) => {
   });
 });
 
+const getFileById = asyncHandler(async (req, res) => {
+  const file = await fileService.getFileById(
+    req.params.fileId,
+    req.user._id
+  );
+
+  res.status(200).json({
+    success: true,
+    data: file,
+  });
+});
+
 module.exports = {
   createFile,
   updateFileContent,
+  getFileById,
 };
