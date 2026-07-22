@@ -1,0 +1,38 @@
+.main-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace-header {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid #333;
+}
+
+.workspace-container {
+  flex: 1;
+  display: flex;
+}
+
+.file-explorer {
+  width: 260px;
+  border-right: 1px solid #333;
+  padding: 16px;
+}
+
+.editor {
+  flex: 1;
+}
+
+.status-bar {
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  align-items: center;
+  border-top: 1px solid #333;
+}

@@ -1,0 +1,83 @@
+.workspace-card{
+    background:#ffffff;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    min-height:180px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.workspace-content h3{
+    margin-bottom:10px;
+}
+
+.workspace-content p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.visibility{
+
+    display:inline-block;
+
+    background:#ececec;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+}
+
+.workspace-actions{
+
+    margin-top:20px;
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.open-btn{
+
+    flex:1;
+
+    background:#0078d4;
+
+    color:white;
+
+    border:none;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.delete-btn{
+
+    flex:1;
+
+    background:#ff4d4f;
+
+    color:white;
+
+    border:none;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}

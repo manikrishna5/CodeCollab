@@ -5,28 +5,33 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Workspace from "./pages/Workspace";
 
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route path="/" element={<Login />} />
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/workspace/:workspaceId"
-          element={<Workspace />}
+          element={
+            <ProtectedRoute>
+              <Workspace />
+            </ProtectedRoute>
+          }
         />
-
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,7 @@
-function Login() {
-    return <h1>Login</h1>;
-}
+import WorkspaceLayout from "../components/workspace/WorkspaceLayout";
 
-export default Login;
+const Workspace = () => {
+  return <WorkspaceLayout />;
+};
+
+export default Workspace;

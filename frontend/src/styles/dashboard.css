@@ -1,0 +1,55 @@
+.dashboard{
+    padding:40px;
+}
+
+.dashboard-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.create-workspace-btn{
+
+    padding:12px 20px;
+
+    border:none;
+
+    background:#0078d4;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.workspace-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+
+    gap:20px;
+
+}
+
+.empty-state{
+
+    height:300px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
