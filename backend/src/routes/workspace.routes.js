@@ -10,7 +10,6 @@ const {
   getWorkspaceById,
   updateWorkspace,
   deleteWorkspace,
-  getWorkspaceTree,
   inviteMember,
 } = require("../controllers/workspace.controller");
 
@@ -19,7 +18,6 @@ router.get("/", protect, getUserWorkspaces);
 router.get("/:workspaceId", protect, getWorkspaceById);
 router.put("/:workspaceId", protect, updateWorkspace);
 router.delete("/:workspaceId", protect, deleteWorkspace);
-router.get("/:workspaceId/tree", protect, getWorkspaceTree);
 router.post(
   "/:workspaceId/invite",
   protect,

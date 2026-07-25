@@ -9,8 +9,8 @@ const memberSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["Owner", "Editor", "Viewer"],
-      default: "Viewer",
+      enum: ["Owner", "Editor"],
+      default: "Editor",
     },
   },
   { _id: false }
@@ -24,21 +24,30 @@ const workspaceSchema = new mongoose.Schema(
       trim: true,
     },
 
-    description: {
+    language: {
       type: String,
-      default: "",
-      trim: true,
+      default: "javascript",
+      enum: [
+        "javascript",
+        "typescript",
+        "java",
+        "python",
+        "cpp",
+        "c",
+        "go",
+        "rust",
+      ],
     },
 
-    visibility: {
+    code: {
       type: String,
-      enum: ["Private", "Public"],
-      default: "Private",
+      default: "",
     },
+
     owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
 
     members: [memberSchema],

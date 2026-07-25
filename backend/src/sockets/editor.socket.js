@@ -1,28 +1,25 @@
 const registerEditorEvents = (io, socket) => {
 
-  socket.on("code-change", ({ workspaceId, fileId, code }) => {
-
+  // Real-time code changes
+  socket.on("code-change", ({ workspaceId, code }) => {
     socket.to(workspaceId).emit("code-updated", {
-      fileId,
       code,
     });
-
   });
 
-  socket.on("sync-code", ({ targetSocketId, code, fileId }) => {
-
+  // Sync code when a new user joins
+  socket.on("sync-code", ({ targetSocketId, code }) => {
     io.to(targetSocketId).emit("code-updated", {
-      fileId,
       code,
     });
-
   });
 
-  socket.on("auto-save", ({ fileId, code }) => {
-
-    console.log("Saving:", fileId);
-
-});
+  // Language change
+  socket.on("language-change", ({ workspaceId, language }) => {
+    socket.to(workspaceId).emit("language-updated", {
+      language,
+    });
+  });
 
 };
 

@@ -65,17 +65,6 @@ const deleteWorkspace = asyncHandler(async (req, res) => {
   });
 });
 
-const getWorkspaceTree = asyncHandler(async (req, res) => {
-  const data = await workspaceService.getWorkspaceTree(
-    req.params.workspaceId,
-    req.user._id
-  );
-
-  res.status(200).json({
-    success: true,
-    data,
-  });
-});
 
 const inviteMember = asyncHandler(async (req, res) => {
 
@@ -103,6 +92,5 @@ module.exports = {
   getWorkspaceById,
   updateWorkspace,
   deleteWorkspace,
-  getWorkspaceTree,
   inviteMember,
 };
