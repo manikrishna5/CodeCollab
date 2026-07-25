@@ -1,21 +1,19 @@
 import api from "./axios";
 
-export const getUserWorkspaces = async () => {
-  const res = await api.get("/workspaces");
-  return res.data;
-};
+export const getWorkspaces = () =>
+  api.get("/workspaces");
 
-export const createWorkspace = async (data) => {
-  const res = await api.post("/workspaces", data);
-  return res.data;
-};
+export const getWorkspace = (id) =>
+  api.get(`/workspaces/${id}`);
 
-export const deleteWorkspace = async (workspaceId) => {
-  const res = await api.delete(`/workspaces/${workspaceId}`);
-  return res.data;
-};
+export const createWorkspace = (data) =>
+  api.post("/workspaces", data);
 
-export const getWorkspaceTree = async (workspaceId) => {
-  const res = await api.get(`/workspaces/${workspaceId}/tree`);
-  return res.data;
-};
+export const updateWorkspace = (id, data) =>
+  api.put(`/workspaces/${id}`, data);
+
+export const deleteWorkspace = (id) =>
+  api.delete(`/workspaces/${id}`);
+
+export const inviteMember = (id, data) =>
+  api.post(`/workspaces/${id}/invite`, data);
