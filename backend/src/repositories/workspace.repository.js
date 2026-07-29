@@ -58,11 +58,26 @@ const addMember = async (workspaceId, member) => {
     .populate("members.user", "fullName username email");
 };
 
+const updateEditor = async (workspaceId, code, language) => {
+  return await Workspace.findByIdAndUpdate(
+    workspaceId,
+    {
+      code,
+      language,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};
+
 module.exports = {
   createWorkspace,
   getUserWorkspaces,
   findWorkspaceById,
   updateWorkspace,
+  updateEditor,
   deleteWorkspace,
   isWorkspaceMember,
   addMember,

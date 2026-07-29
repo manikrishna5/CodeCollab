@@ -15,6 +15,22 @@ const createWorkspace = asyncHandler(async (req, res) => {
   });
 });
 
+const updateEditor = asyncHandler(async (req, res) => {
+
+  const workspace =
+    await workspaceService.updateEditor(
+      req.params.workspaceId,
+      req.body,
+      req.user._id
+    );
+
+  res.status(200).json({
+    success: true,
+    data: workspace,
+  });
+
+});
+
 const getUserWorkspaces = asyncHandler(async (req, res) => {
   const workspaces = await workspaceService.getUserWorkspaces(
     req.user._id
@@ -93,4 +109,5 @@ module.exports = {
   updateWorkspace,
   deleteWorkspace,
   inviteMember,
+  updateEditor,
 };

@@ -85,6 +85,37 @@ const deleteWorkspace = async (workspaceId, userId) => {
   await workspaceRepository.deleteWorkspace(workspaceId);
 };
 
+const updateEditor = async (
+  workspaceId,
+  editorData,
+  userId
+) => {
+
+  const workspace =
+    await workspaceRepository.findWorkspaceById(workspaceId);
+
+  if (!workspace) {
+    const error = new Error("Workspace not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const isMember = workspace.members.some(
+    (member) => member.user._id.toString() === userId.toString()
+  );
+
+  if (!isMember) {
+    const error = new Error("Access Denied");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  return await workspaceRepository.updateEditor(
+    workspaceId,
+    editorData.code,
+    editorData.language
+  );
+};
 
 const inviteMember = async (
   workspaceId,
@@ -148,4 +179,5 @@ module.exports = {
   updateWorkspace,
   deleteWorkspace,
   inviteMember,
+  updateEditor,
 };
