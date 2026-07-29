@@ -1,13 +1,83 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function Workspace() {
-  const { workspaceId } = useParams();
+import { getWorkspace } from "../api/workspace.api";
 
-  return (
-    <div className="flex h-screen items-center justify-center bg-slate-900 text-white">
-      <h1 className="text-3xl font-bold">
-        Workspace : {workspaceId}
-      </h1>
-    </div>
-  );
+import Editor from "../components/editor/Editor";
+import EditorHeader from "../components/editor/EditorHeader";
+import StatusBar from "../components/editor/StatusBar";
+
+import socket from "../services/socket";
+
+export default function Workspace() {
+
+    const { workspaceId } = useParams();
+
+    const [workspace, setWorkspace] = useState(null);
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+
+        loadWorkspace();
+
+    }, []);
+
+    useEffect(() => {
+
+        socket.connect();
+
+        socket.emit("join-workspace", workspaceId);
+
+        return () => {
+
+            socket.emit("leave-workspace", workspaceId);
+
+            socket.disconnect();
+
+        };
+
+    }, [workspaceId]);
+
+    const loadWorkspace = async () => {
+
+        try {
+
+            const res = await getWorkspace(workspaceId);
+
+            setWorkspace(res.data.data);
+
+        } catch (err) {
+
+            console.log(err);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    if (loading)
+        return (
+            <div className="h-screen flex justify-center items-center text-white bg-slate-950">
+                Loading...
+            </div>
+        );
+
+    return (
+
+        <div className="h-screen flex flex-col bg-slate-950">
+
+            <EditorHeader workspace={workspace} />
+
+            <Editor workspace={workspace} />
+
+            <StatusBar workspace={workspace} />
+
+        </div>
+
+    );
+
 }

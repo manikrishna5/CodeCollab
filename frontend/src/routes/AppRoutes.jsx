@@ -5,6 +5,8 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import Workspace from "../pages/Workspace";
 
+import ProtectedLayout from "../layouts/ProtectedLayout";
+
 export default function AppRoutes() {
   return (
     <BrowserRouter>
@@ -14,11 +16,25 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedLayout>
+              <Dashboard />
+            </ProtectedLayout>
+          }
+        />
 
-        <Route path="/workspace/:workspaceId" element={<Workspace />} />
+        <Route
+          path="/workspace/:workspaceId"
+          element={
+            <ProtectedLayout>
+              <Workspace />
+            </ProtectedLayout>
+          }
+        />
 
-        <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
