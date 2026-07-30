@@ -1,13 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import MonacoEditor from "@monaco-editor/react";
 import { debounce } from "lodash";
-
+import { useAuth } from "../../context/AuthContext";
 import socket from "../../services/socket";
 import { saveEditor } from "../../api/editor.api";
 
 export default function Editor({ workspace }) {
+  const { user } = useAuth();
+
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
+
+  const currentMember = workspace?.members?.find(
+    (member) => member.user?._id === user?._id
+  );
+
+  const readOnly = currentMember?.role === "Viewer";
 
   useEffect(() => {
     if (!workspace) return;
@@ -32,6 +40,10 @@ export default function Editor({ workspace }) {
   }, [workspace]);
 
   useEffect(() => {
+    if (!workspace?._id) return;
+
+    socket.emit("join-workspace", workspace._id);
+
     const handleCodeUpdated = ({ code }) => {
       setCode(code);
     };
@@ -48,25 +60,42 @@ export default function Editor({ workspace }) {
       socket.off("language-updated", handleLanguageUpdated);
       autoSave.cancel();
     };
-  }, [autoSave]);
+  }, [workspace, autoSave]);
 
   const handleEditorChange = (value) => {
+    if (readOnly) return;
+
     const newCode = value || "";
 
     setCode(newCode);
 
-    if (workspace?._id) {
-      socket.emit("code-change", {
-        workspaceId: workspace._id,
-        code: newCode,
-      });
+    if (!workspace?._id) return;
 
-      autoSave(newCode, language);
-    }
+    socket.emit("code-change", {
+      workspaceId: workspace._id,
+      code: newCode,
+    });
+
+    autoSave(newCode, language);
+  };
+
+  const handleLanguageChange = (newLanguage) => {
+    if (readOnly) return;
+
+    setLanguage(newLanguage);
+
+    if (!workspace?._id) return;
+
+    socket.emit("language-change", {
+      workspaceId: workspace._id,
+      language: newLanguage,
+    });
+
+    autoSave(code, newLanguage);
   };
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 h-full">
       <MonacoEditor
         height="100%"
         theme="vs-dark"
@@ -76,6 +105,7 @@ export default function Editor({ workspace }) {
         options={{
           automaticLayout: true,
           fontSize: 15,
+          readOnly,
           minimap: {
             enabled: false,
           },

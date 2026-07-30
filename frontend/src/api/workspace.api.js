@@ -29,3 +29,24 @@ export const deleteWorkspace = (workspaceId) => {
 export const inviteMember = (workspaceId, data) => {
   return api.post(`/workspaces/${workspaceId}/invite`, data);
 };
+
+export const joinWorkspace = (workspaceCode) => {
+  return api.post("/workspaces/join", {
+    workspaceCode,
+  });
+};
+
+export const getWorkspaceMembers = (workspaceId) => {
+  return api.get(`/workspaces/${workspaceId}/members`);
+};
+
+export const updateMemberRole = (
+  workspaceId,
+  memberId,
+  role
+) => {
+  return api.put(
+    `/workspaces/${workspaceId}/member/${memberId}`,
+    { role }
+  );
+};

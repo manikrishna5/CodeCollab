@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getWorkspace } from "../api/workspace.api";
-
+import MembersPanel from "../components/editor/MembersPanel";
 import Editor from "../components/editor/Editor";
 import EditorHeader from "../components/editor/EditorHeader";
 import StatusBar from "../components/editor/StatusBar";
@@ -72,7 +72,17 @@ export default function Workspace() {
 
             <EditorHeader workspace={workspace} />
 
-            <Editor workspace={workspace} />
+            <div className="flex flex-1">
+
+    <div className="flex-1">
+
+        <Editor workspace={workspace} />
+
+    </div>
+
+    <MembersPanel workspace={workspace} />
+
+</div>
 
             <StatusBar workspace={workspace} />
 
