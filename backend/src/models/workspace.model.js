@@ -8,10 +8,10 @@ const memberSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-      type: String,
-      enum: ["Owner", "Editor"],
-      default: "Editor",
-    },
+    type: String,
+    enum: ["Owner", "Editor", "Viewer"],
+    default: "Viewer",
+  },
   },
   { _id: false }
 );
@@ -43,6 +43,13 @@ const workspaceSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    
+    workspaceCode: {
+    type: String,
+    unique: true,
+    required: true,
+    index: true,
+   },
 
     owner: {
       type: mongoose.Schema.Types.ObjectId,

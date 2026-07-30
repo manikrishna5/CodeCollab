@@ -102,6 +102,63 @@ const inviteMember = asyncHandler(async (req, res) => {
 
 });
 
+const joinWorkspace = asyncHandler(async (req, res) => {
+
+  const { workspaceCode } = req.body;
+
+  const workspace =
+    await workspaceService.joinWorkspace(
+      workspaceCode,
+      req.user._id
+    );
+
+  res.status(200).json({
+    success: true,
+    message: "Workspace Joined Successfully",
+    data: workspace,
+  });
+
+});
+
+const getWorkspaceMembers = asyncHandler(
+async (req,res)=>{
+
+const members =
+await workspaceService.getWorkspaceMembers(
+req.params.workspaceId,
+req.user._id
+);
+
+res.status(200).json({
+success:true,
+data:members
+});
+
+});
+const updateMemberRole = asyncHandler(
+async (req,res)=>{
+
+const workspace =
+await workspaceService.updateMemberRole(
+
+req.params.workspaceId,
+
+req.params.memberId,
+
+req.body.role,
+
+req.user._id
+
+);
+
+res.status(200).json({
+success:true,
+message:"Role Updated",
+data:workspace
+});
+
+});
+
 module.exports = {
   createWorkspace,
   getUserWorkspaces,
@@ -110,4 +167,7 @@ module.exports = {
   deleteWorkspace,
   inviteMember,
   updateEditor,
+  joinWorkspace,
+  getWorkspaceMembers,
+  updateMemberRole,
 };

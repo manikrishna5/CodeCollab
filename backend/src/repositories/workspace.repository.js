@@ -71,14 +71,73 @@ const updateEditor = async (workspaceId, code, language) => {
     }
   );
 };
+const findWorkspaceByCode = async (workspaceCode) => {
+  return await Workspace.findOne({ workspaceCode })
+    .populate("owner", "fullName username email")
+    .populate("members.user", "fullName username email");
+};
 
+const addViewer = async (workspaceId, userId) => {
+  return await Workspace.findByIdAndUpdate(
+    workspaceId,
+    {
+      $push: {
+        members: {
+          user: userId,
+          role: "Viewer",
+        },
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("owner", "fullName username email")
+    .populate("members.user", "fullName username email");
+};
+const updateMemberRole = async (
+  workspaceId,
+  memberId,
+  role
+) => {
+
+  return await Workspace.findOneAndUpdate(
+    {
+      _id: workspaceId,
+      "members.user": memberId,
+    },
+    {
+      $set: {
+        "members.$.role": role,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("owner", "fullName username email")
+    .populate("members.user", "fullName username email");
+
+};
+const getWorkspaceMembers = async (workspaceId) => {
+
+  const workspace = await Workspace.findById(workspaceId)
+    .populate("members.user", "fullName username email");
+
+  return workspace.members;
+
+};
 module.exports = {
   createWorkspace,
   getUserWorkspaces,
   findWorkspaceById,
+  findWorkspaceByCode,
+  addViewer,
   updateWorkspace,
   updateEditor,
   deleteWorkspace,
   isWorkspaceMember,
   addMember,
+  updateMemberRole,
+  getWorkspaceMembers,
 };
